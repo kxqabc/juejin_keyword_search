@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>搜索结果</title>
+    <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type=text/javascript src="{{ url_for('static', filename='jquery-3.2.1.min.js') }}"></script>
+    <script type="text/javascript">
+        var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+    </script>
+
+    <style>
+        .btn{
+            margin-bottom: 50px;
+        }
+    </style>
+
+</head>
+<body>
+
+<table class="table table-striped" width="200" id="result_table">
+    <thead><tr><td><strong>文章</strong></td><td><strong>星数</strong></td></tr></thead>
+    <tbody id="result_tbody">
+    {% for data in datas %}
+        <tr>
+            <td width="100"><a href="{{ data.link }}" target="_blank" >{{ data.title }}</a></td>
+            <td width="100">{{ data.star_count }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<button type="button" class="btn btn-lg btn-primary btn-block" id="get_more">点击获得更多结果。。</button>
+
+<script type="text/javascript">
+    var req_page = 1;
+    var keyword = {{ keyword|tojson }};
+    var baseline = {{ baseline|int }};
+</script>
+
+<script type="text/javascript">
+    $('button#get_more').bind('click', function appendData() {
+        $('button#get_more').attr("disabled","true");
+        if(req_page < 15){
+            $.getJSON($SCRIPT_ROOT + '/nextPage', {
+                keyword: keyword,
+                baseline: baseline,
+                req_page:req_page
+            }, function(data) {
+                $.each(data, function (index, element) {
+                    $('tbody#result_tbody').append("<tr><td width=\"100\"><a href=\""+element.link+"\" target=\"_blank\" >"+element.title+"</a></td>"+"<td width=\"100\">"+element.star_count+"</td></tr>")
+                })
+                req_page = req_page +1;
+                $('button#get_more').removeAttr("disabled");
+            });
+
+            return false;
+        }else{
+            $('button#get_more').attr("disabled","true");
+            console.log('到达最后一页啦 ^_^');
+            alert("到达最后一页啦 ^_^");
+        }
+    });
+</script>
+
+
+<!--滚动到最底端时触发-->
+{#<script type="text/javascript">#}
+{#    $(document).ready(function(){#}
+{#        $(window).scroll(function() {#}
+            {#只允许一个用户请求20次#}
+{#            if(req_page < 20){#}
+{#                //console.log("document height: %f,window height: %f,scrollTop: %f",$(document).height(),$(window).height(),$(document).scrollTop());#}
+{#                if ($(document).scrollTop() >= $(document).height() - $(window).height() - 2) //-2#}
+{#                    appendData();#}
+{#                }else {#}
+{#                    alert('到达最后一页啦 ^_^')#}
+{#                }#}
+{#            });#}
+{#    });#}
+{#</script>#}
+
+</body>
+</html>
