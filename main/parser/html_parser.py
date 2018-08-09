@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 from bs4 import BeautifulSoup
 from main.beans import result_bean
 

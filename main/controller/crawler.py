@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 from main.downloader import downloader
 from main.parser import html_parser, json_parser
 

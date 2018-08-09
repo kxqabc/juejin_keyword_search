@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 import json
 from main.beans.result_bean import ResultBean
 from main.exception.parse_error import ParseError
