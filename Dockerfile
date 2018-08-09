@@ -1,4 +1,4 @@
-FROM python:2.7
+FROM python:3.6
 
 WORKDIR /app
 
@@ -6,6 +6,6 @@ ADD . /app
 
 RUN pip install -r requirements.txt
 
-EXPOSE 8889
+EXPOSE 5000
 
-CMD ["python", "app.py", "-p", "8889"]
+CMD ["gunicorn", "app:app", "-c", "./gunicorn.conf.py"]

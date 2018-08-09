@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 import os
 from flask import Flask, jsonify, redirect, url_for, render_template, request
 from main.controller import crawler
